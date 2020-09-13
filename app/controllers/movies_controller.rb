@@ -11,7 +11,14 @@ class MoviesController < ApplicationController
   end
 
   def index
-    @movies = Movie.order(params[:clicked_header])
+    if params.has_key?("ratings")
+      @movies = Movie.with_rating(params["ratings"])
+      @checked_ratings = params["ratings"].keys()
+    else
+      @movies = Movie.all
+    end
+      @movies = @movies.order(params[:clicked_header])
+      @all_ratings = Movie.all_ratings
   end
 
   def new
