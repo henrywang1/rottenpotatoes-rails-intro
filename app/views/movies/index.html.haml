@@ -4,9 +4,9 @@
 %table#movies.table.table-striped.col-md-12
   %thead
     %tr
-      %th Movie Title
+      %th#title_header=link_to "Movie Title", {:clicked_header=>"title"}, :class=>column_clicked?("title")
       %th Rating
-      %th Release Date
+      %th#release_date_header=link_to "Release Date", {:clicked_header=>"release_date"}, :class=>column_clicked?("release_date")
       %th More Info
   %tbody
     - @movies.each do |movie|
