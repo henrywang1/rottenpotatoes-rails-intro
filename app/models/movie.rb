@@ -1,6 +1,6 @@
 class Movie < ActiveRecord::Base
     def self.all_ratings
-        ["G", "R", "PG-13","PG"]
+        ['G','PG','PG-13','R','NC-17']
     end
     def self.with_rating(ratings)
         self.where(rating: ratings)
