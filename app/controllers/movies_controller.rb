@@ -11,14 +11,31 @@ class MoviesController < ApplicationController
   end
 
   def index
-    if params.has_key?("ratings")
-      @movies = Movie.with_rating(params["ratings"])
-      @checked_ratings = params["ratings"].keys()
+    @all_ratings = Movie.all_ratings
+    if params[:ratings] == nil || params[:clicked_header]  == nil
+      if params[:ratings] == nil
+        params[:ratings] = session[:ratings] ||  Movie.all_ratings
+      end
+      if params[:clicked_header] == nil
+        params[:clicked_header] = session[:clicked_header] || ""
+      end
+
+      session[:ratings] = params[:ratings]
+      session[:clicked_header] = params[:clicked_header]
+      flash.keep
+      redirect_to movies_path(:clicked_header => session[:clicked_header], :ratings => session[:ratings])
+    end
+    if params[:ratings] != Movie.all_ratings
+      @checked_ratings = params[:ratings]
+      @checked_ratings = @checked_ratings.keys() unless @checked_ratings.class == Array
+      @movies = Movie.with_rating(@checked_ratings)
     else
       @movies = Movie.all
+      @checked_ratings = Movie.all_ratings
     end
       @movies = @movies.order(params[:clicked_header])
-      @all_ratings = Movie.all_ratings
+      session[:ratings] = params[:ratings]
+      session[:clicked_header] = params[:clicked_header]
   end
 
   def new
@@ -48,5 +65,4 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
-
 end

@@ -3,7 +3,7 @@ module MoviesHelper
   def oddness(count)
     count.odd? ?  "odd" :  "even"
   end
-    def column_clicked?(column)
-        params["clicked_header"] == column ? ["text-success", "hilite"]: nil
-    end
+  def column_clicked?(column)
+      params["clicked_header"] == column ? ["text-success", "hilite"]: nil
+  end
 end
